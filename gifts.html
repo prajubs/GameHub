@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEBO - Real Money Luck Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #6e45e2;
+      --secondary-color: #88d3ce;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+      --success-color: #28a745;
+      --danger-color: #dc3545;
+      --warning-color: #ffc107;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--dark-color), #16213e);
+      color: var(--light-color);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--light-color);
+      text-decoration: none;
+    }
+    
+    .logo span {
+      color: var(--secondary-color);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .balance {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #5d3ac9;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    main {
+      padding: 40px 0;
+    }
+    
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+    
+    .game-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    
+    .game-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .game-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: var(--secondary-color);
+    }
+    
+    .game-card p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 20px;
+    }
+    
+    .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 20px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .modal h2 {
+      margin-bottom: 20px;
+      color: var(--secondary-color);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .payment-method {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-method:hover {
+      border-color: var(--primary-color);
+    }
+    
+    .payment-method.active {
+      border-color: var(--primary-color);
+      background: rgba(110, 69, 226, 0.2);
+    }
+    
+    .payment-method img {
+      height: 30px;
+      object-fit: contain;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 50px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .terms {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    .scratch-card {
+      margin: 30px auto;
+      width: 300px;
+      height: 150px;
+      background: #efefef;
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      line-height: 150px;
+      color: #222;
+      font-weight: 600;
+      font-size: 20px;
+      user-select: none;
+      cursor: pointer;
+      border: 2px dashed #ccc;
+    }
+    
+    .scratch-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #9e9e9e, #616161);
+      filter: blur(6px);
+      transition: opacity 1s;
+    }
+    
+    .result-container {
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .result-container h2 {
+      margin-bottom: 20px;
+    }
+    
+    .prize-image {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin: 20px auto;
+      display: block;
+    }
+    
+    .spinner {
+      margin: 30px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Claim Page Styles */
+    .claim-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 30px;
+      margin: 40px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .prize-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .prize-header h2 {
+      color: var(--success-color);
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .prize-details {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    
+    .prize-details p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    
+    .prize-details .label {
+      color: var(--secondary-color);
+      font-weight: 500;
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .tracking-id {
+      margin-top: 30px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+    }
+    
+    .tracking-id span {
+      color: var(--secondary-color);
+      font-weight: 700;
+    }
+    
+    #claimPage {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .user-info {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainPage">
+    <header>
+      <a href="#" class="logo">BE<span>BO</span></a>
+      <div class="user-info">
+        <div class="balance">Balance: ₹<span id="userBalance">0</span></div>
+        <a href="#" class="btn btn-outline" id="loginBtn">Login</a>
+      </div>
+    </header>
+    
+    <main>
+      <section class="hero">
+        <h1>Test Your Luck & Win Amazing Prizes</h1>
+        <p>Play our exciting luck-based games and stand a chance to win high-value prizes with small investments. The more you play, the higher your chances!</p>
+        <a href="#" class="btn btn-primary" id="howToPlayBtn">How to Play</a>
+      </section>
+      
+      <section class="game-cards">
+        <div class="game-card">
+          <h3>Bronze Game</h3>
+          <p>Try your luck with our entry-level game. Perfect for beginners!</p>
+          <div class="price">₹10 - ₹100</div>
+          <a href="#" class="btn btn-primary play-btn" data-min="10" data-max="100" data-price="10">Play Now</a>
+        </div>
+        
+        <div class="game-card">
+          <h3>Silver Game</h3>
+          <p>Medium stakes with better winning chances and prizes.</p>
+          <div class="price">₹100 - ₹500</div>
+          <a href="#" class="btn btn-primary play-btn" data-min="100" data-max="500" data-price="50">Play Now</a>
+        </div>
+        
+        <div class="game-card">
+          <h3>Gold Game</h3>
+          <p>High stakes game with premium prizes and best odds.</p>
+          <div class="price">₹500 - ₹1000</div>
+          <a href="#" class="btn btn-primary play-btn" data-min="500" data-max="1000" data-price="100">Play Now</a>
+        </div>
+        
+        <div class="game-card">
+          <h3>Platinum Game</h3>
+          <p>For high rollers - biggest prizes and exclusive rewards.</p>
+          <div class="price">₹1000+</div>
+          <a href="#" class="btn btn-primary play-btn" data-min="1000" data-max="5000" data-price="200">Play Now</a>
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <div class="terms">
+        <p>BEBO is a game of skill and chance. Participants must be 18+ years. Please play responsibly. By playing, you agree to our Terms and Conditions.</p>
+        <p>© 2023 BEBO Games. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+  
+  <!-- Payment Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Complete Payment</h2>
+      <div id="paymentInfo"></div>
+      
+      <div class="form-group">
+        <label for="amount">Amount (₹)</label>
+        <input type="number" id="amount" min="10" value="10">
+      </div>
+      
+      <h3>Select Payment Method</h3>
+      <div class="payment-methods">
+        <div class="payment-method active" data-method="upi">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI">
+        </div>
+        <div class="payment-method" data-method="card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Card">
+        </div>
+        <div class="payment-method" data-method="netbanking">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/NetBanking.svg" alt="Net Banking">
+        </div>
+      </div>
+      
+      <div id="paymentDetails">
+        <div class="form-group upi-details">
+          <label for="upiId">UPI ID</label>
+          <input type="text" id="upiId" placeholder="yourname@upi">
+        </div>
+        
+        <div class="form-group card-details" style="display: none;">
+          <label for="cardNumber">Card Number</label>
+          <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+          
+          <div style="display: flex; gap: 15px; margin-top: 15px;">
+            <div style="flex: 1;">
+              <label for="expiry">Expiry</label>
+              <input type="text" id="expiry" placeholder="MM/YY">
+            </div>
+            <div style="flex: 1;">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" placeholder="123">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group netbanking-details" style="display: none;">
+          <label for="bank">Select Bank</label>
+          <select id="bank">
+            <option value="">Select your bank</option>
+            <option value="sbi">State Bank of India</option>
+            <option value="hdfc">HDFC Bank</option>
+            <option value="icici">ICICI Bank</option>
+            <option value="axis">Axis Bank</option>
+            <option value="kotak">Kotak Mahindra Bank</option>
+          </select>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" id="confirmPayment" style="width: 100%;">Pay Now</button>
+    </div>
+  </div>
+  
+  <!-- Result Modal -->
+  <div class="modal" id="resultModal">
+    <div class="modal-content">
+      <div class="result-container" id="resultContent">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- How to Play Modal -->
+  <div class="modal" id="howToPlayModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>How to Play</h2>
+      <ol style="margin-left: 20px; margin-bottom: 20px;">
+        <li style="margin-bottom: 10px;">Choose a game level that matches your budget</li>
+        <li style="margin-bottom: 10px;">Complete the payment using your preferred method</li>
+        <li style="margin-bottom: 10px;">Play the game and test your luck</li>
+        <li style="margin-bottom: 10px;">If you win, claim your prize by providing delivery details</li>
+        <li style="margin-bottom: 10px;">Your prize will be delivered within 7-10 working days</li>
+      </ol>
+      <h3>Prizes You Can Win</h3>
+      <ul style="margin-left: 20px;">
+        <li style="margin-bottom: 10px;">Electronics (Smartphones, Headphones, Smartwatches)</li>
+        <li style="margin-bottom: 10px;">Gift Cards (Amazon, Flipkart, Zomato)</li>
+        <li style="margin-bottom: 10px;">Cash Prizes</li>
+        <li style="margin-bottom: 10px;">Vouchers for popular services</li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Claim Page (hidden by default) -->
+  <div class="container" id="claimPage">
+    <header>
+      <a href="#" class="logo" id="claimPageLogo">BE<span>BO</span></a>
+    </header>
+    
+    <div class="claim-card">
+      <div class="prize-header">
+        <h2>🎉 Congratulations!</h2>
+        <p>You've won an amazing prize!</p>
+      </div>
+      
+      <img id="prizeImage" src="" alt="Prize" class="prize-image">
+      
+      <div class="prize-details">
+        <p><span class="label">Prize:</span> <span id="prizeName"></span></p>
+        <p><span class="label">Value:</span> ₹<span id="prizeValue"></span></p>
+        <p><span class="label">Type:</span> <span id="prizeType"></span></p>
+      </div>
+      
+      <form id="claimForm">
+        <h3>Claim Your Prize</h3>
+        <p>Please provide your details for prize delivery:</p>
+        
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required pattern="[0-9]{10}" title="Please enter a 10-digit phone number">
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Delivery Address</label>
+          <textarea id="address" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="pincode">Pincode</label>
+          <input type="text" id="pincode" required pattern="[0-9]{6}" title="6-digit pincode">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Submit Claim</button>
+      </form>
+      
+      <div class="tracking-id" id="trackingInfo" style="display: none;">
+        Your tracking ID: <span id="trackingId"></span>
+      </div>
+    </div>
+    
+    <footer>
+      <p>© 2023 BEBO Games. All rights reserved.</p>
+      <p>Prize delivery takes 7-14 working days. Contact support@bebo.com for queries.</p>
+    </footer>
+  </div>
+  
+  <script>
+    // User data
+    let user = {
+      loggedIn: false,
+      balance: 0,
+      name: ""
+    };
+    
+    // Game data
+    const prizes = {
+      bronze: [
+        { name: "₹50 Cash", value: 50, type: "cash", image: "https://via.placeholder.com/200?text=₹50+Cash" },
+        { name: "₹100 Amazon Gift Card", value: 100, type: "giftcard", image: "https://via.placeholder.com/200?text=Amazon+GC" },
+        { name: "Bluetooth Earphones", value: 150, type: "product", image: "https://via.placeholder.com/200?text=Earphones" },
+        { name: "Better Luck Next Time", value: 0, type: "none", image: "https://via.placeholder.com/200?text=Try+Again" }
+      ],
+      silver: [
+        { name: "₹250 Cash", value: 250, type: "cash", image: "https://via.placeholder.com/200?text=₹250+Cash" },
+        { name: "₹500 Flipkart Gift Card", value: 500, type: "giftcard", image: "https://via.placeholder.com/200?text=Flipkart+GC" },
+        { name: "Smart Band", value: 600, type: "product", image: "https://via.placeholder.com/200?text=Smart+Band" },
+        { name: "Portable Speaker", value: 700, type: "product", image: "https://via.placeholder.com/200?text=Speaker" }
+      ],
+      gold: [
+        { name: "₹1000 Cash", value: 1000, type: "cash", image: "https://via.placeholder.com/200?text=₹1000+Cash" },
+        { name: "Smart Watch", value: 1500, type: "product", image: "https://via.placeholder.com/200?text=Smart+Watch" },
+        { name: "Wireless Headphones", value: 2000, type: "product", image: "https://via.placeholder.com/200?text=Headphones" },
+        { name: "Fitness Tracker", value: 2500, type: "product", image: "https://via.placeholder.com/200?text=Fitness+Tracker" }
+      ],
+      platinum: [
+        { name: "₹5000 Cash", value: 5000, type: "cash", image: "https://via.placeholder.com/200?text=₹5000+Cash" },
+        { name: "Latest Smartphone", value: 15000, type: "product", image: "https://via.placeholder.com/200?text=Smartphone" },
+        { name: "Laptop", value: 30000, type: "product", image: "https://via.placeholder.com/200?text=Laptop" },
+        { name: "International Trip Voucher", value: 50000, type: "voucher", image: "https://via.placeholder.com/200?text=Trip+Voucher" }
+      ]
+    };
+    
+    // DOM elements
+    const loginBtn = document.getElementById('loginBtn');
+    const userBalance = document.getElementById('userBalance');
+    const playButtons = document.querySelectorAll('.play-btn');
+    const paymentModal = document.getElementById('paymentModal');
+    const resultModal = document.getElementById('resultModal');
+    const howToPlayModal = document.getElementById('howToPlayModal');
+    const howToPlayBtn = document.getElementById('howToPlayBtn');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const confirmPaymentBtn = document.getElementById('confirmPayment');
+    const paymentInfo = document.getElementById('paymentInfo');
+    const amountInput = document.getElementById('amount');
+    const resultContent = document.getElementById('resultContent');
+    const mainPage = document.getElementById('mainPage');
+    const claimPage = document.getElementById('claimPage');
+    const claimForm = document.getElementById('claimForm');
+    const claimPageLogo = document.getElementById('claimPageLogo');
+    
+    // Current game selection
+    let currentGame = null;
+    let currentPrize = null;
+    
+    // Initialize the page
+    function initPage() {
+      // Check if we should show claim page
+      const prize = sessionStorage.getItem('wonPrize');
+      if (prize) {
+        showClaimPage(JSON.parse(prize));
+      } else {
+        showMainPage();
+      }
+    }
+    
+    function showMainPage() {
+      mainPage.style.display = 'block';
+      claimPage.style.display = 'none';
+      updateUI();
+    }
+    
+    function showClaimPage(prize) {
+      mainPage.style.display = 'none';
+      claimPage.style.display = 'block';
+      
+      // Display prize details
+      document.getElementById('prizeName').textContent = prize.name;
+      document.getElementById('prizeValue').textContent = prize.value;
+      document.getElementById('prizeType').textContent = prize.type.charAt(0).toUpperCase() + prize.type.slice(1);
+      document.getElementById('prizeImage').src = prize.image;
+      document.getElementById('prizeImage').alt = prize.name;
+      
+      currentPrize = prize;
+    }
+    
+    // Event listeners
+    loginBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!user.loggedIn) {
+        // Simulate login
+        user.loggedIn = true;
+        user.name = "John Doe";
+        user.balance = 500;
+        updateUI();
+        alert(`Welcome, ${user.name}! You've been credited with ₹500 bonus.`);
+      } else {
+        // Show account details
+        alert(`Logged in as ${user.name}\nBalance: ₹${user.balance}`);
+      }
+    });
+    
+    claimPageLogo.addEventListener('click', function(e) {
+      e.preventDefault();
+      sessionStorage.removeItem('wonPrize');
+      showMainPage();
+    });
+    
+    playButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!user.loggedIn) {
+          alert('Please login to play');
+          return;
+        }
+        
+        currentGame = {
+          min: parseInt(button.dataset.min),
+          max: parseInt(button.dataset.max),
+          price: parseInt(button.dataset.price)
+        };
+        
+        showPaymentModal();
+      });
+    });
+    
+    howToPlayBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      howToPlayModal.style.display = 'flex';
+    });
+    
+    closeButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        paymentModal.style.display = 'none';
+        resultModal.style.display = 'none';
+        howToPlayModal.style.display = 'none';
+      });
+    });
+    
+    paymentMethods.forEach(method => {
+      method.addEventListener('click', function() {
+        paymentMethods.forEach(m => m.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Show relevant payment details
+        document.querySelector('.upi-details').style.display = 'none';
+        document.querySelector('.card-details').style.display = 'none';
+        document.querySelector('.netbanking-details').style.display = 'none';
+        
+        if (this.dataset.method === 'upi') {
+          document.querySelector('.upi-details').style.display = 'block';
+        } else if (this.dataset.method === 'card') {
+          document.querySelector('.card-details').style.display = 'block';
+        } else if (this.dataset.method === 'netbanking') {
+          document.querySelector('.netbanking-details').style.display = 'block';
+        }
+      });
+    });
+    
+    amountInput.addEventListener('change', function() {
+      const amount = parseInt(this.value);
+      if (amount < currentGame.min) {
+        this.value = currentGame.min;
+      } else if (amount > currentGame.max) {
+        this.value = currentGame.max;
+      }
+    });
+    
+    confirmPaymentBtn.addEventListener('click', function() {
+      const amount = parseInt(amountInput.value);
+      const paymentMethod = document.querySelector('.payment-method.active').dataset.method;
+      
+      // Validate payment details
+      if (paymentMethod === 'upi' && !document.getElementById('upiId').value) {
+        alert('Please enter your UPI ID');
+        return;
+      }
+      
+      if (paymentMethod === 'card') {
+        if (!document.getElementById('cardNumber').value || 
+            !document.getElementById('expiry').value || 
+            !document.getElementById('cvv').value) {
+          alert('Please enter all card details');
+          return;
+        }
+      }
+      
+      if (paymentMethod === 'netbanking' && !document.getElementById('bank').value) {
+        alert('Please select your bank');
+        return;
+      }
+      
+      // Process payment (simulated)
+      processPayment(amount);
+    });
+    
+    claimForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Generate tracking ID
+      const trackingId = 'BEBO-' + Math.floor(100000 + Math.random() * 900000);
+      
+      // Get form values
+      const claimData = {
+        prize: currentPrize,
+        userDetails: {
+          name: document.getElementById('fullName').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          address: document.getElementById('address').value,
+          pincode: document.getElementById('pincode').value
+        },
+        trackingId: trackingId,
+        claimDate: new Date().toISOString()
+      };
+      
+      // In a real app, you would send this data to your backend
+      console.log('Claim submitted:', claimData);
+      
+      // Show success message
+      claimForm.style.display = 'none';
+      document.getElementById('trackingId').textContent = trackingId;
+      document.getElementById('trackingInfo').style.display = 'block';
+      
+      // Clear the prize from session storage
+      sessionStorage.removeItem('wonPrize');
+    });
+    
+    // Functions
+    function updateUI() {
+      if (user.loggedIn) {
+        loginBtn.textContent = 'My Account';
+        userBalance.textContent = user.balance;
+      } else {
+        loginBtn.textContent = 'Login';
+        userBalance.textContent = '0';
+      }
+    }
+    
+    function showPaymentModal() {
+      paymentInfo.innerHTML = `
+        <p>You're playing the <strong>${getGameLevel(currentGame.min, currentGame.max)}</strong> game.</p>
+        <p>Minimum investment: ₹${currentGame.min}</p>
+        <p>Maximum investment: ₹${currentGame.max}</p>
+      `;
+      
+      amountInput.value = currentGame.price;
+      amountInput.min = currentGame.min;
+      amountInput.max = currentGame.max;
+      
+      paymentModal.style.display = 'flex';
+    }
+    
+    function getGameLevel(min, max) {
+      if (min >= 10 && max <= 100) return 'Bronze';
+      if (min >= 100 && max <= 500) return 'Silver';
+      if (min >= 500 && max <= 1000) return 'Gold';
+      return 'Platinum';
+    }
+    
+    function processPayment(amount) {
+      // Show loading
+      confirmPaymentBtn.disabled = true;
+      confirmPaymentBtn.innerHTML = 'Processing... <i class="fas fa-spinner fa-spin"></i>';
+      
+      // Simulate payment processing
+      setTimeout(() => {
+        // Deduct amount from balance
+        user.balance -= amount;
+        updateUI();
+        
+        // Close payment modal
+        paymentModal.style.display = 'none';
+        confirmPaymentBtn.disabled = false;
+        confirmPaymentBtn.innerHTML = 'Pay Now';
+        
+        // Show result after a delay
+        setTimeout(() => {
+          playGame(amount);
+        }, 500);
+      }, 2000);
+    }
+    
+    function playGame(amount) {
+      // Determine prize pool based on amount
+      let prizePool;
+      if (amount >= 10 && amount <= 100) prizePool = prizes.bronze;
+      else if (amount > 100 && amount <= 500) prizePool = prizes.silver;
+      else if (amount > 500 && amount <= 1000) prizePool = prizes.gold;
+      else prizePool = prizes.platinum;
+      
+      // Show loading in result modal
+      resultContent.innerHTML = `
+        <h2>Testing Your Luck...</h2>
+        <div class="spinner"></div>
+        <p>Your ₹${amount} game is in progress</p>
+      `;
+      
+      resultModal.style.display = 'flex';
+      
+      // Simulate game processing
+      setTimeout(() => {
+        // Determine win/loss (60% chance to win something)
+        const win = Math.random() < 0.6;
+        
+        if (win) {
+          // Select a random prize from the pool
+          const prize = prizePool[Math.floor(Math.random() * prizePool.length)];
+          showResult(true, prize, amount);
+        } else {
+          showResult(false, null, amount);
+        }
+      }, 3000);
+    }
+    
+    function showResult(win, prize, amount) {
+      if (win) {
+        resultContent.innerHTML = `
+          <h2 style="color: var(--success-color);">🎉 Congratulations! You Won!</h2>
+          <img src="${prize.image}" alt="${prize.name}" class="prize-image">
+          <h3>${prize.name}</h3>
+          <p>Value: ₹${prize.value}</p>
+          <p>You played with: ₹${amount}</p>
+          <button class="btn btn-primary" onclick="claimPrize('${prize.name}', ${prize.value}, '${prize.type}', '${prize.image}')">Claim Your Prize</button>
+          <p style="margin-top: 20px;"><a href="#" onclick="closeModalAndPlayAgain()">Play Again</a></p>
+        `;
+        
+        // Add to user balance if cash prize
+        if (prize.type === 'cash') {
+          user.balance += prize.value;
+          updateUI();
+        }
+      } else {
+        resultContent.innerHTML = `
+          <h2 style="color: var(--danger-color);">😞 Better Luck Next Time!</h2>
+          <img src="https://via.placeholder.com/200?text=Try+Again" alt="Try Again" class="prize-image">
+          <p>You played with: ₹${amount}</p>
+          <button class="btn btn-primary" onclick="closeModalAndPlayAgain()">Try Again</button>
+        `;
+      }
+    }
+    
+    function claimPrize(name, value, type, image) {
+      // Store prize details
+      const prize = {
+        name: name,
+        value: value,
+        type: type,
+        image: image
+      };
+      
+      sessionStorage.setItem('wonPrize', JSON.stringify(prize));
+      
+      // Close the modal and show claim page
+      resultModal.style.display = 'none';
+      showClaimPage(prize);
+    }
+    
+    function closeModalAndPlayAgain() {
+      resultModal.style.display = 'none';
+      showPaymentModal();
+    }
+    
+    // Initialize the page
+    initPage();
+  </script>
+</body>
+</html>

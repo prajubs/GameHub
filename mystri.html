@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Select Your Range | BEBO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 25px;
+      color: #2e2e2e;
+      font-weight: 700;
+    }
+
+    .range-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .range-btn {
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #5f2c82, #49a09d);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s;
+      text-decoration: none;
+    }
+
+    .range-btn:hover {
+      transform: scale(1.03);
+      background: linear-gradient(135deg, #3c1053, #ad5389);
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .legal-notice {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    @media (max-width: 500px) {
+      .range-btns {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎰 Choose Your BEBO Play Range</h1>
+    <div class="range-btns">
+      <a class="range-btn" href="payment.html?min=200&max=300">₹200 - ₹300</a>
+      <a class="range-btn" href="payment.html?min=300&max=500">₹300 - ₹500</a>
+      <a class="range-btn" href="payment.html?min=500&max=800">₹500 - ₹800</a>
+      <a class="range-btn" href="payment.html?min=800&max=1000">₹800 - ₹1000</a>
+    </div>
+    <div class="footer-note">💡 Tip: The higher the range, the bigger the reward!</div>
+    <div class="legal-notice">
+      You must be 18+ to play. Please gamble responsibly.
+    </div>
+  </div>
+</body>
+</html>

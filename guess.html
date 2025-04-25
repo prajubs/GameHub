@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Hunter Challenge - Real Money</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .game-area {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .player-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        
+        .code-display {
+            font-size: 24px;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #34495e;
+            color: white;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .visible-part {
+            color: white;
+        }
+        
+        .hidden-part {
+            color: #34495e;
+        }
+        
+        .dash {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .guesses {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .clue-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+        }
+        
+        .history {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .success {
+            color: #27ae60;
+        }
+        
+        .error {
+            color: #e74c3c;
+        }
+        
+        .payment-modal, .question-modal, .deposit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+        }
+        
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .question-area {
+            margin: 15px 0;
+        }
+        
+        .question-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .option-btn {
+            text-align: left;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+        }
+        
+        .option-btn:hover {
+            background-color: #d6eaf8;
+        }
+        
+        .deposit-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .deposit-option {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .deposit-option:hover {
+            background-color: #e2e6ea;
+        }
+        
+        .deposit-option.selected {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .legal-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 20px;
+        }
+        
+        .verification-badge {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .age-verification {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code Hunter Challenge <span class="verification-badge">Verified</span></h1>
+            <p>Decipher the hidden code to win real money prizes!</p>
+        </header>
+        
+        <div class="game-area">
+            <div class="age-verification">
+                <p>⚠️ You must be 18+ to play for real money. By playing, you confirm you meet the legal age requirement in your jurisdiction.</p>
+            </div>
+            
+            <div class="player-info">
+                <div>Player Balance: $<span id="balance">0.00</span></div>
+                <div>Games Played: <span id="games-played">0</span></div>
+            </div>
+            
+            <div class="code-display">
+                <span class="visible-part">XY234ABC</span>
+                <span class="dash">-</span>
+                <span class="hidden-part" id="hidden-display">X-X-X</span>
+            </div>
+            
+            <div class="controls">
+                <button id="deposit-btn">Deposit Funds</button>
+                <button id="play-btn" disabled>Pay $1 to Play</button>
+                <div id="game-controls" style="display: none;">
+                    <p>Guesses left: <span class="guesses" id="guesses">10</span></p>
+                    <input type="text" id="guess-input" placeholder="Enter the 3 hidden digits (e.g., 123)">
+                    <button id="submit-guess">Submit Guess</button>
+                    <button id="get-clue">Get Clue ($0.50)</button>
+                    <button id="answer-question">Answer Question for Free Clue</button>
+                </div>
+            </div>
+            
+            <div id="clue-area" class="clue-area" style="display: none;">
+                <h3>Clues:</h3>
+                <div id="clues"></div>
+            </div>
+            
+            <div class="history">
+                <h3>Game History</h3>
+                <div id="history-items"></div>
+            </div>
+            
+            <div class="legal-text">
+                <p>This game is for entertainment purposes only. Please gamble responsibly. Must be 18+ to play. Terms and conditions apply.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="payment-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Payment Required</h2>
+            <p>To play this game, you need to pay $1 from your balance.</p>
+            <p>Current balance: $<span id="modal-balance">0.00</span></p>
+            <button id="confirm-payment">Pay $1 and Start Game</button>
+        </div>
+    </div>
+    
+    <!-- Question Modal -->
+    <div id="question-modal" class="question-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-question-modal">&times;</span>
+            <h2>Answer This Question for a Free Clue</h2>
+            <div class="question-area">
+                <p id="question-text">What is the capital of France?</p>
+                <div class="question-options" id="question-options">
+                    <!-- Options will be inserted here by JavaScript -->
+                </div>
+            </div>
+            <div id="question-result" style="margin-top: 15px; font-weight: bold;"></div>
+        </div>
+    </div>
+    
+    <!-- Deposit Modal -->
+    <div id="deposit-modal" class="deposit-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-deposit-modal">&times;</span>
+            <h2>Deposit Funds</h2>
+            <p>Add money to your account to play the game.</p>
+            
+            <div class="deposit-options">
+                <div class="deposit-option" data-amount="10">
+                    <strong>$10.00</strong> - Get $1 bonus
+                </div>
+                <div class="deposit-option" data-amount="20">
+                    <strong>$20.00</strong> - Get $3 bonus
+                </div>
+                <div class="deposit-option" data-amount="50">
+                    <strong>$50.00</strong> - Get $10 bonus
+                </div>
+                <div class="deposit-option" data-amount="100">
+                    <strong>$100.00</strong> - Get $25 bonus
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <label for="custom-amount">Or enter custom amount:</label>
+                <input type="number" id="custom-amount" min="5" max="1000" step="1" placeholder="Enter amount ($5-$1000)">
+            </div>
+            
+            <button id="confirm-deposit" style="margin-top: 20px; width: 100%;">Proceed to Payment</button>
+            
+            <div class="legal-text">
+                <p>Deposits are processed securely. Minimum deposit $5. Bonuses are subject to wagering requirements.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Game state
+        const gameState = {
+            balance: 0.00,
+            gamesPlayed: 0,
+            isPlaying: false,
+            guessesLeft: 10,
+            hiddenCode: "",
+            visibleCode: "XY234ABC",
+            clues: [],
+            gameHistory: [],
+            currentQuestion: null,
+            selectedDepositAmount: 0
+        };
+        
+        // Questions database
+        const questions = [
+            {
+                question: "What is the square root of 64?",
+                options: ["4", "6", "8", "10"],
+                answer: 2
+            },
+            {
+                question: "What is the next number in sequence: 2, 4, 8, 16, ___?",
+                options: ["20", "24", "32", "64"],
+                answer: 2
+            },
+            {
+                question: "Which of these is a prime number?",
+                options: ["15", "21", "23", "27"],
+                answer: 2
+            },
+            {
+                question: "What is 3 cubed (3³)?",
+                options: ["9", "18", "27", "36"],
+                answer: 2
+            },
+            {
+                question: "What is the sum of angles in a triangle?",
+                options: ["90°", "180°", "270°", "360°"],
+                answer: 1
+            }
+        ];
+        
+        // DOM elements
+        const elements = {
+            balance: document.getElementById('balance'),
+            gamesPlayed: document.getElementById('games-played'),
+            playBtn: document.getElementById('play-btn'),
+            depositBtn: document.getElementById('deposit-btn'),
+            gameControls: document.getElementById('game-controls'),
+            guesses: document.getElementById('guesses'),
+            guessInput: document.getElementById('guess-input'),
+            submitGuess: document.getElementById('submit-guess'),
+            getClue: document.getElementById('get-clue'),
+            answerQuestion: document.getElementById('answer-question'),
+            clueArea: document.getElementById('clue-area'),
+            clues: document.getElementById('clues'),
+            historyItems: document.getElementById('history-items'),
+            paymentModal: document.getElementById('payment-modal'),
+            modalBalance: document.getElementById('modal-balance'),
+            confirmPayment: document.getElementById('confirm-payment'),
+            closeModal: document.querySelector('.close-modal'),
+            questionModal: document.getElementById('question-modal'),
+            closeQuestionModal: document.getElementById('close-question-modal'),
+            questionText: document.getElementById('question-text'),
+            questionOptions: document.getElementById('question-options'),
+            questionResult: document.getElementById('question-result'),
+            hiddenDisplay: document.getElementById('hidden-display'),
+            depositModal: document.getElementById('deposit-modal'),
+            closeDepositModal: document.getElementById('close-deposit-modal'),
+            depositOptions: document.querySelectorAll('.deposit-option'),
+            customAmount: document.getElementById('custom-amount'),
+            confirmDeposit: document.getElementById('confirm-deposit')
+        };
+        
+        // Initialize game
+        function initGame() {
+            updateUI();
+            
+            // Event listeners
+            elements.playBtn.addEventListener('click', showPaymentModal);
+            elements.depositBtn.addEventListener('click', showDepositModal);
+            elements.submitGuess.addEventListener('click', submitGuess);
+            elements.getClue.addEventListener('click', getClue);
+            elements.answerQuestion.addEventListener('click', showQuestionModal);
+            elements.confirmPayment.addEventListener('click', startGame);
+            elements.closeModal.addEventListener('click', hidePaymentModal);
+            elements.closeQuestionModal.addEventListener('click', hideQuestionModal);
+            elements.closeDepositModal.addEventListener('click', hideDepositModal);
+            elements.confirmDeposit.addEventListener('click', processDeposit);
+            
+            // Deposit option selection
+            elements.depositOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    elements.depositOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.selectedDepositAmount = parseFloat(this.dataset.amount);
+                    elements.customAmount.value = '';
+                });
+            });
+            
+            // Custom amount input
+            elements.customAmount.addEventListener('input', function() {
+                if (this.value) {
+                    elements.depositOptions.forEach(opt => opt.classList.remove('selected'));
+                    gameState.selectedDepositAmount = parseFloat(this.value) || 0;
+                }
+            });
+            
+            // Allow pressing Enter to submit guess
+            elements.guessInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitGuess();
+                }
+            });
+            
+            // Check if user has balance from previous session
+            const savedBalance = localStorage.getItem('playerBalance');
+            if (savedBalance) {
+                gameState.balance = parseFloat(savedBalance);
+                updateUI();
+            }
+        }
+        
+        // Show payment modal
+        function showPaymentModal() {
+            elements.modalBalance.textContent = gameState.balance.toFixed(2);
+            elements.paymentModal.style.display = 'flex';
+        }
+        
+        // Hide payment modal
+        function hidePaymentModal() {
+            elements.paymentModal.style.display = 'none';
+        }
+        
+        // Show deposit modal
+        function showDepositModal() {
+            elements.depositModal.style.display = 'flex';
+        }
+        
+        // Hide deposit modal
+        function hideDepositModal() {
+            elements.depositModal.style.display = 'none';
+        }
+        
+        // Process deposit (simulated - in real app this would connect to payment processor)
+        function processDeposit() {
+            if (gameState.selectedDepositAmount < 5) {
+                alert("Minimum deposit is $5");
+                return;
+            }
+            
+            // Calculate bonus based on deposit amount
+            let bonus = 0;
+            if (gameState.selectedDepositAmount === 10) bonus = 1;
+            else if (gameState.selectedDepositAmount === 20) bonus = 3;
+            else if (gameState.selectedDepositAmount === 50) bonus = 10;
+            else if (gameState.selectedDepositAmount === 100) bonus = 25;
+            
+            const totalAdded = gameState.selectedDepositAmount + bonus;
+            
+            // In a real app, you would:
+            // 1. Connect to payment processor (Stripe, PayPal, etc.)
+            // 2. Verify payment
+            // 3. Only then credit the account
+            
+            // For this demo, we'll simulate successful payment
+            gameState.balance += totalAdded;
+            localStorage.setItem('playerBalance', gameState.balance.toString());
+            
+            addHistoryItem(`Deposited $${gameState.selectedDepositAmount.toFixed(2)} + $${bonus.toFixed(2)} bonus`, 'success');
+            updateUI();
+            hideDepositModal();
+            
+            // Show confirmation (in real app this would be after payment verification)
+            alert(`Success! $${totalAdded.toFixed(2)} has been added to your account (including $${bonus.toFixed(2)} bonus)`);
+        }
+        
+        // Show question modal
+        function showQuestionModal() {
+            if (!gameState.isPlaying) return;
+            
+            // Select a random question
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            gameState.currentQuestion = questions[randomIndex];
+            
+            // Display question
+            elements.questionText.textContent = gameState.currentQuestion.question;
+            elements.questionOptions.innerHTML = '';
+            elements.questionResult.textContent = '';
+            
+            // Display options
+            gameState.currentQuestion.options.forEach((option, index) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option-btn';
+                optionBtn.textContent = option;
+                optionBtn.addEventListener('click', () => checkAnswer(index));
+                elements.questionOptions.appendChild(optionBtn);
+            });
+            
+            elements.questionModal.style.display = 'flex';
+        }
+        
+        // Hide question modal
+        function hideQuestionModal() {
+            elements.questionModal.style.display = 'none';
+        }
+        
+        // Check answer to question
+        function checkAnswer(selectedIndex) {
+            if (selectedIndex === gameState.currentQuestion.answer) {
+                // Correct answer
+                elements.questionResult.textContent = "Correct! You earned a free clue!";
+                elements.questionResult.className = "success";
+                
+                // Generate and display a free clue
+                setTimeout(() => {
+                    generateClue(true);
+                    hideQuestionModal();
+                }, 1500);
+            } else {
+                // Wrong answer
+                elements.questionResult.textContent = "Incorrect! Try another option.";
+                elements.questionResult.className = "error";
+            }
+        }
+        
+        // Start game
+        function startGame() {
+            if (gameState.balance < 1) {
+                alert("Not enough balance to play!");
+                hidePaymentModal();
+                return;
+            }
+            
+            // Deduct money
+            gameState.balance -= 1;
+            gameState.gamesPlayed += 1;
+            localStorage.setItem('playerBalance', gameState.balance.toString());
+            
+            // Generate random hidden code (3 digits with last 3 as continuous series)
+            gameState.hiddenCode = generateHiddenCode();
+            
+            // Reset game state (but keep balance)
+            gameState.isPlaying = true;
+            gameState.guessesLeft = 10;
+            gameState.clues = [];
+            
+            // Clear history display
+            elements.historyItems.innerHTML = '';
+            
+            // Update UI
+            updateUI();
+            elements.gameControls.style.display = 'block';
+            elements.clueArea.style.display = 'none';
+            elements.guessInput.value = '';
+            hidePaymentModal();
+            
+            // Add initial game message
+            addHistoryItem("New game started! The code is 3 consecutive increasing digits (e.g., 1-2-3)", "success");
+        }
+        
+        // Generate hidden code with 3 consecutive increasing digits
+        function generateHiddenCode() {
+            // Generate a random starting digit (1-7 to allow for +2)
+            const startDigit = Math.floor(Math.random() * 7) + 1;
+            
+            // Create continuous series (e.g., 1-2-3 or 5-6-7)
+            const digit1 = startDigit;
+            const digit2 = startDigit + 1;
+            const digit3 = startDigit + 2;
+            
+            return `${digit1}${digit2}${digit3}`;
+        }
+        
+        // Submit guess
+        function submitGuess() {
+            if (!gameState.isPlaying) return;
+            
+            const guess = elements.guessInput.value.trim();
+            
+            // Validate input
+            if (guess.length !== 3 || !/^\d{3}$/.test(guess)) {
+                alert("Please enter exactly 3 digits!");
+                return;
+            }
+            
+            // Check if it's a valid continuous series
+            const isContinuous = checkContinuousSeries(guess);
+            if (!isContinuous) {
+                addHistoryItem(`Invalid: ${guess} - Must be consecutive increasing digits (e.g., 1-2-3)`, "error");
+                elements.guessInput.value = '';
+                return;
+            }
+            
+            if (guess === gameState.hiddenCode) {
+                // Correct guess - win $5
+                const winnings = 5.00;
+                gameState.balance += winnings;
+                localStorage.setItem('playerBalance', gameState.balance.toString());
+                
+                addHistoryItem(`Correct! You guessed the code: ${guess} and won $${winnings.toFixed(2)}!`, 'success');
+                endGame(true);
+                
+                // Start new game automatically
+                setTimeout(startGame, 2000);
+            } else {
+                // Incorrect guess - decrement guesses
+                gameState.guessesLeft -= 1;
+                elements.guesses.textContent = gameState.guessesLeft;
+                
+                addHistoryItem(`Incorrect guess: ${guess} (Guesses left: ${gameState.guessesLeft})`, 'error');
+                
+                // Provide hint about the correct code
+                const guessNum = parseInt(guess);
+                const hiddenNum = parseInt(gameState.hiddenCode);
+                if (guessNum < hiddenNum) {
+                    addHistoryItem("Hint: The correct code is higher", "error");
+                } else {
+                    addHistoryItem("Hint: The correct code is lower", "error");
+                }
+                
+                if (gameState.guessesLeft <= 0) {
+                    endGame(false);
+                }
+            }
+            
+            elements.guessInput.value = '';
+            updateUI();
+        }
+        
+        // Check if a guess follows the continuous series rule
+        function checkContinuousSeries(guess) {
+            const digit1 = parseInt(guess[0]);
+            const digit2 = parseInt(guess[1]);
+            const digit3 = parseInt(guess[2]);
+            
+            return (digit2 === digit1 + 1) && (digit3 === digit2 + 1);
+        }
+        
+        // Get clue (paid) - doesn't decrease guess count
+        function getClue() {
+            if (!gameState.isPlaying || gameState.balance < 0.5) {
+                alert("Not enough balance for a clue!");
+                return;
+            }
+            
+            generateClue(false);
+        }
+        
+        // Generate a clue (free if fromQuestion is true)
+        function generateClue(fromQuestion) {
+            if (!fromQuestion) {
+                gameState.balance -= 0.5;
+                localStorage.setItem('playerBalance', gameState.balance.toString());
+                addHistoryItem(`Purchased clue: -$0.50`, 'error');
+            } else {
+                addHistoryItem(`Earned free clue by answering question!`, 'success');
+            }
+            
+            updateUI();
+            
+            // Generate a mathematical clue (never reveals digits directly)
+            const digit1 = parseInt(gameState.hiddenCode[0]);
+            const digit2 = parseInt(gameState.hiddenCode[1]);
+            const digit3 = parseInt(gameState.hiddenCode[2]);
+            
+            const clueTypes = [
+                `The digits form a continuous increasing sequence (each digit is 1 more than the previous)`,
+                `The sum of all three digits is ${digit1 + digit2 + digit3}`,
+                `The product of the first two digits is ${digit1 * digit2}`,
+                `If you subtract the first digit from the last, you get ${digit3 - digit1}`,
+                `The digits are three consecutive numbers in ascending order`
+            ];
+            
+            // Select a random clue that hasn't been shown yet
+            let availableClues = clueTypes.filter(clue => 
+                !gameState.clues.some(c => c.text === clue)
+            );
+            
+            if (availableClues.length === 0) {
+                availableClues = clueTypes; // If all clues shown, repeat them
+            }
+            
+            const randomClue = availableClues[Math.floor(Math.random() * availableClues.length)];
+            
+            gameState.clues.push({
+                text: randomClue,
+                revealedIndex: null
+            });
+            
+            displayClues();
+            elements.clueArea.style.display = 'block';
+        }
+        
+        // Display all clues
+        function displayClues() {
+            elements.clues.innerHTML = gameState.clues.map(clue => 
+                `<p>• ${clue.text}</p>`
+            ).join('');
+        }
+        
+        // End game
+        function endGame(win) {
+            gameState.isPlaying = false;
+            
+            if (win) {
+                addHistoryItem(`Game won! The code was ${gameState.visibleCode}-${gameState.hiddenCode}`, 'success');
+            } else {
+                addHistoryItem(`Game over! The code was ${gameState.visibleCode}-${gameState.hiddenCode}`, 'error');
+            }
+            
+            elements.gameControls.style.display = 'none';
+        }
+        
+        // Add history item
+        function addHistoryItem(text, className) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            
+            const item = document.createElement('div');
+            item.className = `history-item ${className}`;
+            item.textContent = `[${timeString}] ${text}`;
+            
+            elements.historyItems.prepend(item);
+            gameState.gameHistory.unshift(text);
+        }
+        
+        // Update UI
+        function updateUI() {
+            elements.balance.textContent = gameState.balance.toFixed(2);
+            elements.gamesPlayed.textContent = gameState.gamesPlayed;
+            
+            // Disable play button if no balance
+            elements.playBtn.disabled = gameState.balance < 1;
+            
+            // Disable clue button if no balance or not playing
+            elements.getClue.disabled = !gameState.isPlaying || gameState.balance < 0.5;
+        }
+        
+        // Initialize the game when page loads
+        window.onload = initGame;
+    </script>
+</body>
+</html>

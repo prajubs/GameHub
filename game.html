@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mystery Box | BEBO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 600px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .player-info {
+      display: flex;
+      justify-content: space-between;
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .range-info {
+      background-color: #e8f4f8;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .mystery-box {
+      margin: 20px auto;
+      background: linear-gradient(135deg, #5f2c82, #49a09d);
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mystery-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .mystery-box.shake {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+      100% { transform: translateX(0); }
+    }
+
+    .box-content {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      padding: 15px;
+    }
+
+    .result-display {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fa;
+      border: 2px dashed #dee2e6;
+    }
+
+    .win {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+
+    .lose {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+
+    .action-btns {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #5f2c82, #49a09d);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3c1053, #ad5389);
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .btn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .legal-notice {
+      font-size: 12px;
+      color: #6c757d;
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #dee2e6;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    @media (max-width: 500px) {
+      .mystery-box {
+        width: 180px;
+        height: 180px;
+      }
+      
+      .action-btns {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BEBO Mystery Box</h1>
+  </header>
+
+  <div class="container">
+    <div class="player-info">
+      <div>Current Bet: ₹<span id="currentBet">0</span></div>
+    </div>
+
+    <div class="range-info">
+      Playing in: ₹<span id="displayMin">0</span> - ₹<span id="displayMax">0</span> range
+    </div>
+
+    <div id="mysteryBox" class="mystery-box">
+      <div class="box-content">🎁 Click to Open!</div>
+    </div>
+
+    <div id="resultDisplay" class="result-display">
+      Click the box to reveal your prize!
+    </div>
+
+    <div class="action-btns">
+      <button id="playAgainBtn" class="btn btn-primary" disabled>Play Again</button>
+      <button id="claimBtn" class="btn btn-secondary" style="display:none;" onclick="claimPrize()">Claim Prize</button>
+      <button id="changeRangeBtn" class="btn btn-secondary" onclick="window.location.href='index.html'">Change Range</button>
+    </div>
+  </div>
+
+  <div class="legal-notice">
+    You must be 18+ to play. Please gamble responsibly.
+  </div>
+
+  <script>
+    // Game state
+    const gameState = {
+      minAmount: 0,
+      maxAmount: 0,
+      boxOpened: false,
+      currentPrize: ""
+    };
+
+    // Prize tiers
+    const prizeTiers = {
+      200: ["₹100 Cash", "₹50 Voucher", "Better Luck Next Time", "Smart Watch"],
+      300: ["₹150 Cash", "₹75 Voucher", "Wireless Earbuds", "Better Luck Next Time"],
+      500: ["₹250 Cash", "₹100 Voucher", "Smartphone Case", "Better Luck Next Time"],
+      800: ["₹400 Cash", "₹200 Voucher", "Bluetooth Speaker", "Better Luck Next Time"],
+      1000: ["₹500 Cash", "IPL Tickets", "Smartphone", "Better Luck Next Time"]
+    };
+
+    // DOM elements
+    const elements = {
+      currentBet: document.getElementById('currentBet'),
+      displayMin: document.getElementById('displayMin'),
+      displayMax: document.getElementById('displayMax'),
+      mysteryBox: document.getElementById('mysteryBox'),
+      boxContent: document.querySelector('.box-content'),
+      resultDisplay: document.getElementById('resultDisplay'),
+      playAgainBtn: document.getElementById('playAgainBtn'),
+      claimBtn: document.getElementById('claimBtn'),
+      changeRangeBtn: document.getElementById('changeRangeBtn')
+    };
+
+    // Initialize game
+    function initGame() {
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const minAmount = parseInt(urlParams.get('min'));
+      const maxAmount = parseInt(urlParams.get('max'));
+      const paid = urlParams.get('paid');
+
+      // Validate parameters
+      if (!minAmount || !maxAmount || paid !== 'true') {
+        alert('Invalid game parameters. Redirecting to home page.');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Set game state
+      gameState.minAmount = minAmount;
+      gameState.maxAmount = maxAmount;
+
+      // Update UI
+      elements.currentBet.textContent = minAmount;
+      elements.displayMin.textContent = minAmount;
+      elements.displayMax.textContent = maxAmount;
+
+      // Add event listeners
+      elements.mysteryBox.addEventListener('click', openBox);
+      elements.playAgainBtn.addEventListener('click', resetBox);
+    }
+
+    // Open the mystery box
+    function openBox() {
+      if (gameState.boxOpened) return;
+
+      // Add shake animation
+      elements.mysteryBox.classList.add('shake');
+      
+      // After animation, reveal the prize
+      setTimeout(() => {
+        elements.mysteryBox.classList.remove('shake');
+        revealPrize();
+      }, 500);
+    }
+
+    // Reveal the prize
+    function revealPrize() {
+      gameState.boxOpened = true;
+
+      // Find the appropriate prize tier
+      let tier = 200;
+      if (gameState.minAmount >= 800) tier = 1000;
+      else if (gameState.minAmount >= 500) tier = 800;
+      else if (gameState.minAmount >= 300) tier = 500;
+      else if (gameState.minAmount >= 200) tier = 300;
+
+      const prizes = prizeTiers[tier] || prizeTiers[200];
+      const randomIndex = Math.floor(Math.random() * prizes.length);
+      gameState.currentPrize = prizes[randomIndex];
+
+      // Update box content
+      elements.boxContent.textContent = gameState.currentPrize === "Better Luck Next Time" 
+        ? "😢 Better Luck Next Time" 
+        : `🎉 ${gameState.currentPrize}`;
+      
+      // Update result display
+      if (gameState.currentPrize === "Better Luck Next Time") {
+        elements.resultDisplay.textContent = `Sorry, you didn't win this time. Try again!`;
+        elements.resultDisplay.className = "result-display lose";
+        elements.playAgainBtn.disabled = false;
+        elements.claimBtn.style.display = 'none';
+      } else {
+        elements.resultDisplay.textContent = `Congratulations! You won: ${gameState.currentPrize}`;
+        elements.resultDisplay.className = "result-display win";
+        elements.playAgainBtn.disabled = true;
+        elements.claimBtn.style.display = 'inline-block';
+      }
+    }
+
+    // Reset the box for another play
+    function resetBox() {
+      gameState.boxOpened = false;
+      gameState.currentPrize = "";
+      elements.boxContent.textContent = "🎁 Click to Open!";
+      elements.resultDisplay.textContent = "Good luck! Click the box to play again";
+      elements.resultDisplay.className = "result-display";
+      elements.playAgainBtn.disabled = true;
+      elements.claimBtn.style.display = 'none';
+    }
+
+    // Redirect to claim page
+    function claimPrize() {
+      // Encode the prize for URL
+      const encodedPrize = encodeURIComponent(gameState.currentPrize);
+      window.location.href = `claim.html?prize=${encodedPrize}&min=${gameState.minAmount}&max=${gameState.maxAmount}`;
+    }
+
+    // Initialize the game when page loads
+    window.onload = initGame;
+  </script>
+</body>
+</html>

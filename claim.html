@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Claim Your Prize | BEBO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 600px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .prize-info {
+      background-color: #d4edda;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      text-align: center;
+      border: 2px solid #c3e6cb;
+    }
+
+    .prize-info h2 {
+      color: #155724;
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #343a40;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #5f2c82;
+      outline: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #5f2c82, #49a09d);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, #3c1053, #ad5389);
+      transform: translateY(-2px);
+    }
+
+    .back-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      color: #495057;
+      background-color: #e9ecef;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .back-btn:hover {
+      background-color: #dee2e6;
+    }
+
+    .legal-notice {
+      font-size: 12px;
+      color: #6c757d;
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #dee2e6;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎉 Claim Your BEBO Prize</h1>
+  </header>
+
+  <div class="container">
+    <div class="prize-info" id="prizeInfo">
+      <h2>You Won: <span id="prizeName"></span></h2>
+      <p>Please fill out the form below to claim your prize</p>
+    </div>
+
+    <form id="claimForm">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Shipping Address</label>
+        <input type="text" id="address" name="address" required>
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required>
+      </div>
+
+      <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required>
+      </div>
+
+      <div class="form-group">
+        <label for="zipCode">ZIP Code</label>
+        <input type="text" id="zipCode" name="zipCode" required>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Claim</button>
+      <button type="button" class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
+    </form>
+  </div>
+
+  <div class="legal-notice">
+    You must be 18+ to play. Please gamble responsibly. Prize claims are subject to verification.
+  </div>
+
+  <script>
+    // Get the prize from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const prize = decodeURIComponent(urlParams.get('prize') || '');
+    const minAmount = urlParams.get('min');
+    const maxAmount = urlParams.get('max');
+
+    // Validate parameters
+    if (!prize || prize === "Better Luck Next Time" || !minAmount || !maxAmount) {
+      alert('Invalid prize claim. Redirecting to home page.');
+      window.location.href = 'index.html';
+    }
+
+    // Display the prize
+    document.getElementById('prizeName').textContent = prize;
+
+    // Handle form submission
+    document.getElementById('claimForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const formData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        zipCode: document.getElementById('zipCode').value,
+        prize: prize,
+        betRange: `${minAmount}-${maxAmount}`,
+        claimDate: new Date().toISOString()
+      };
+
+      // In a real app, you would send this data to your server
+      console.log('Claim submitted:', formData);
+      
+      // For demo purposes, just show an alert
+      alert(`Thank you for your claim! We'll process your ${prize} shortly.`);
+      
+      // Redirect to home page
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
