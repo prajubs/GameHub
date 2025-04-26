@@ -1,257 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Game Hub | Play 3 Exciting Games</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #1a252f;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: var(--primary);
-            color: var(--light);
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.1) 0%, transparent 20%), 
-                              radial-gradient(circle at 80% 70%, rgba(155, 89, 182, 0.1) 0%, transparent 20%);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeIn 1s ease-in-out;
-        }
-        .logo {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-bottom: 2rem;
-        }
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .game-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-        }
-        .game-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.03) 100%);
-            pointer-events: none;
-        }
-        .game-image {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        .game-image::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-        }
-        .game-title {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-            z-index: 1;
-        }
-        .game-info {
-            padding: 1.5rem;
-        }
-        .game-description {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        .game-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-        .stat {
-            display: flex;
-            align-items: center;
-        }
-        .stat i {
-            margin-right: 0.5rem;
-            color: var(--secondary);
-        }
-        .play-btn {
-            display: block;
-            width: 100%;
-            padding: 0.8rem;
-            background: linear-gradient(45deg, var(--secondary), var(--accent));
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            text-decoration: none;
-        }
-        .play-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        footer {
-            text-align: center;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 768px) {
-            .games-grid {
-                grid-template-columns: 1fr;
-            }
-            .logo {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Game Hub | Play 5 Exciting Games</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #1a252f;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: var(--primary);
+      color: var(--light);
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.1) 0%, transparent 20%), 
+                        radial-gradient(circle at 80% 70%, rgba(155, 89, 182, 0.1) 0%, transparent 20%);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .logo {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .tagline {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      margin-bottom: 2rem;
+    }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .game-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .game-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.03) 100%);
+      pointer-events: none;
+    }
+    .game-image {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .game-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    }
+    .game-title {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      z-index: 1;
+    }
+    .game-info {
+      padding: 1.5rem;
+    }
+    .game-description {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+    }
+    .stat i {
+      margin-right: 0.5rem;
+      color: var(--secondary);
+    }
+    .play-btn {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      background: linear-gradient(45deg, var(--secondary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+    }
+    .play-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+      .logo {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">Ultimate Game Hub</div>
-            <div class="tagline">Choose your adventure from our collection of exciting games</div>
-        </header>
+<div class="container">
+  <header>
+    <div class="logo">Ultimate Game Hub</div>
+    <div class="tagline">Choose your adventure from our collection of exciting games</div>
+  </header>
 
-        <div class="games-grid">
-            <!-- Game 1 -->
-            <div class="game-card">
-                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1606166325681-27991607f8e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-                    <div class="game-title">Lucky Win</div>
-                </div>
-                <div class="game-info">
-                    <p class="game-description">Classic hand game of luck and timing. Will you beat the machine and win?</p>
-                    <div class="game-stats">
-                        <div class="stat"><i>★</i> 4.8 (12K reviews)</div>
-                        <div class="stat"><i>👥</i> 1 Player</div>
-                        <div class="stat"><i>🕹️</i> Casual</div>
-                    </div>
-                    <a href="gifts.html" class="play-btn">PLAY NOW</a>
-                </div>
-            </div>
+  <div class="games-grid">
 
-            <!-- Game 2 -->
-            <div class="game-card">
-                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1547949003-9792a18a2601?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-                    <div class="game-title">Guess Code</div>
-                </div>
-                <div class="game-info">
-                    <p class="game-description">Can you guess the secret code? Use logic, clues, and deduction to win the game.</p>
-                    <div class="game-stats">
-                        <div class="stat"><i>★</i> 4.5 (8.7K reviews)</div>
-                        <div class="stat"><i>👥</i> 1 Player</div>
-                        <div class="stat"><i>🕹️</i> Puzzle</div>
-                    </div>
-                    <a href="guess.html" class="play-btn">PLAY NOW</a>
-                </div>
-            </div>
-
-            <!-- Game 3 -->
-            <div class="game-card">
-                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1506091403742-e3aa39518db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-                    <div class="game-title">Mystri Box</div>
-                </div>
-                <div class="game-info">
-                    <p class="game-description">Open the mystery box by solving memory puzzles and reveal your hidden reward!</p>
-                    <div class="game-stats">
-                        <div class="stat"><i>★</i> 4.9 (15.3K reviews)</div>
-                        <div class="stat"><i>👥</i> 1 Player</div>
-                        <div class="stat"><i>🕹️</i> Mystery</div>
-                    </div>
-                    <a href="mystri.html" class="play-btn">PLAY NOW</a>
-                </div>
-            </div>
+    <!-- Game 1 -->
+    <div class="game-card">
+      <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1606166325681-27991607f8e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="game-title">Lucky Win</div>
+      </div>
+      <div class="game-info">
+        <p class="game-description">Classic hand game of luck and timing. Beat the machine and claim victory!</p>
+        <div class="game-stats">
+          <div class="stat"><i>★</i> 4.8 (12K reviews)</div>
+          <div class="stat"><i>👥</i> 1 Player</div>
+          <div class="stat"><i>🕹️</i> Casual</div>
         </div>
-
-        <footer>
-            <p>© 2023 Ultimate Game Hub. All rights reserved.</p>
-            <p>Contact: support@ultimategamehub.com | Privacy Policy | Terms of Service</p>
-        </footer>
+        <a href="gifts.html" class="play-btn">PLAY NOW</a>
+      </div>
     </div>
 
-    <script>
-        const routes = {
-            "gifts.html": "gifts.html",
-            "guess.html": "guess.html",
-            "mystri.html": "mystri.html"
-        };
+    <!-- Game 2 -->
+    <div class="game-card">
+      <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1547949003-9792a18a2601?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="game-title">Guess Code</div>
+      </div>
+      <div class="game-info">
+        <p class="game-description">Guess the hidden code! Use your logic and problem-solving skills.</p>
+        <div class="game-stats">
+          <div class="stat"><i>★</i> 4.5 (8.7K reviews)</div>
+          <div class="stat"><i>👥</i> 1 Player</div>
+          <div class="stat"><i>🕹️</i> Puzzle</div>
+        </div>
+        <a href="guess.html" class="play-btn">PLAY NOW</a>
+      </div>
+    </div>
 
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', function () {
-                const btn = this.querySelector('a');
-                if (btn) {
-                    const href = btn.getAttribute('href');
-                    if (routes[href]) {
-                        window.location.href = routes[href];
-                    }
-                }
-            });
-        });
+    <!-- Game 3 -->
+    <div class="game-card">
+      <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1506091403742-e3aa39518db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="game-title">Mystri Box</div>
+      </div>
+      <div class="game-info">
+        <p class="game-description">Solve memory puzzles to unlock the mystery box and earn hidden rewards!</p>
+        <div class="game-stats">
+          <div class="stat"><i>★</i> 4.9 (15.3K reviews)</div>
+          <div class="stat"><i>👥</i> 1 Player</div>
+          <div class="stat"><i>🕹️</i> Mystery</div>
+        </div>
+        <a href="mystri.html" class="play-btn">PLAY NOW</a>
+      </div>
+    </div>
 
-        document.querySelectorAll('.play-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation(); // Prevent parent card click
-            });
-        });
-    </script>
+    <!-- Game 4 -->
+    <div class="game-card">
+      <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1611077542492-b77595e18284?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="game-title">Guess Answer</div>
+      </div>
+      <div class="game-info">
+        <p class="game-description">Challenge your mind by guessing correct answers under pressure!</p>
+        <div class="game-stats">
+          <div class="stat"><i>★</i> 4.7 (9.1K reviews)</div>
+          <div class="stat"><i>👥</i> 1 Player</div>
+          <div class="stat"><i>🕹️</i> Quiz</div>
+        </div>
+        <a href="guess_answer.html" class="play-btn">PLAY NOW</a>
+      </div>
+    </div>
+
+    <!-- Game 5 -->
+    <div class="game-card">
+      <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1539627831859-a911cf04d3c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="game-title">Question Answer</div>
+      </div>
+      <div class="game-info">
+        <p class="game-description">Answer tricky questions quickly to win points and beat the clock!</p>
+        <div class="game-stats">
+          <div class="stat"><i>★</i> 4.6 (7.8K reviews)</div>
+          <div class="stat"><i>👥</i> 1 Player</div>
+          <div class="stat"><i>🕹️</i> Trivia</div>
+        </div>
+        <a href="question_answer.html" class="play-btn">PLAY NOW</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 Ultimate Game Hub. All rights reserved.</p>
+    <p>Contact: support@ultimategamehub.com | Privacy Policy | Terms of Service</p>
+  </footer>
+</div>
+
+<script>
+  const routes = {
+    "gifts.html": "gifts.html",
+    "guess.html": "guess.html",
+    "mystri.html": "mystri.html",
+    "guess_answer.html": "guess_answer.html",
+    "question_answer.html": "question_answer.html"
+  };
+
+  document.querySelectorAll('.game-card').forEach(card => {
+    card.addEventListener('click', function () {
+      const btn = this.querySelector('a');
+      if (btn) {
+        const href = btn.getAttribute('href');
+        if (routes[href]) {
+          window.location.href = routes[href];
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll('.play-btn').forEach(btn => {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+  });
+</script>
+
 </body>
 </html>
